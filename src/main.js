@@ -1,11 +1,11 @@
 import './style.css'
 
 document.querySelector('#app').innerHTML = `
-<header class="bg-black">
-  <div class="mx-48 my-16">
-    <h1>RSS агрегатор</h1>
+<header class="flex flex-col m-auto max-w-7xl text-white bg-black">
+  <div class="mx-48 my-8 space-y-2">
+    <h1 class="text-5xl">RSS агрегатор</h1>
     <p>Начните читать RSS сегодня! Это легко, это красиво.</p>
-    <form class="mt-4 mb-2 flex w-full space-x-4">
+    <form class="flex w-full space-x-4">
       <input
         type="text"
         class="flex-3 form-input rounded-sm"
