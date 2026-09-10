@@ -1,29 +1,53 @@
 import './style.css'
+import * as yup from 'yup'
+import { proxy, subscribe, snapshot } from 'valtio/vanilla'
 
-document.querySelector('#app').innerHTML = `
-<header class="flex flex-col m-auto max-w-7xl text-white bg-black">
-  <div class="mx-48 my-8 space-y-2">
-    <h1 class="text-5xl">RSS агрегатор</h1>
-    <p>Начните читать RSS сегодня! Это легко, это красиво.</p>
-    <form class="flex w-full space-x-4">
-      <input
-        type="text"
-        class="flex-3 form-input rounded-sm"
-        placeholder="Ссылка RSS"
-        name="rss"
-      >
-      
-      <button
-        type="submit"
-        class="flex-1 bg-blue-600 rounded-sm"
-        name="submit"
-      >
-        Добавить
-      </button>
-    </form>
-    <p class="text-gray-500 text-sm">
-      Пример: https://lorem-rss.hexlet.app/feed
-    </p>
-  </div>
-</header>
-`
+const elements = {
+  form: document.getElementById('rss-form'),
+  input: document.getElementById('rss-input'),
+  error: document.getElementById('error'),
+}
+
+const state = proxy({
+  form: {
+    input: '',
+    error: '',
+  },
+  list: [],
+})
+
+const validate = (url, list) => {
+  const schema = yup
+    .string()
+    .trim()
+    .required('Не должно быть пустым')
+    .url('Ссылка должна быть валидным URL')
+    .notOneOf(list, 'Такой адрес уже существует')
+
+  schema
+    .validate(url)
+    .then(() => state.form.error = '')
+    .catch(error => state.form.error = error.message)
+}
+
+elements.form.addEventListener('submit', (e) => {
+  e.preventDefault()
+
+  validate(state.form.input, state.list)
+
+  if (state.form.error === '') {
+    state.list.push(state.form.input)
+    state.form.input = ''
+    state.form.error = ''
+  }
+})
+
+elements.input.addEventListener('input', (e) => {
+  state.form.input = e.target.value
+})
+
+subscribe(state.form, () => {
+  const { error } = snapshot(state.form)
+  elements.error.textContent = error
+  elements.input.classList.toggle('border-red-600', error !== '')
+})

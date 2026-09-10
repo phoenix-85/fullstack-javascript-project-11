@@ -5,8 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>fullstack-javascript-project-11</title>
   </head>
-  <body>
-    <div id="app"></div>
+  <body class="container mx-auto flex flex-col">
+    <header class="px-48 py-8 text-white bg-black">
+      <div class="space-y-2">
+        <h1 class="text-5xl">RSS агрегатор</h1>
+        <p>Начните читать RSS сегодня! Это легко, это красиво.</p>
+        <form id="rss-form" class="flex gap-x-4">
+          <label for="rss-input" class="sr-only"></label>
+          <input
+                  class="w-full text-black rounded-sm"
+                  id="rss-input"
+                  name="rss-input"
+                  placeholder="Ссылка RSS"
+                  type="text"
+                  autofocus
+          >
+          <button
+                  class="btn btn-primary"
+                  name="submit"
+                  type="submit"
+          >
+            Добавить
+          </button>
+        </form>
+        <div id="error"></div>
+        <p class="text-gray-500 text-sm">
+          Пример: https://lorem-rss.hexlet.app/feed
+        </p>
+      </div>
+    </header>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
