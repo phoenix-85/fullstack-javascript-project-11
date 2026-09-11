@@ -8,20 +8,21 @@
   <body class="container mx-auto flex flex-col">
     <header class="px-48 py-8 text-white bg-black">
       <div class="space-y-2">
-        <h1 class="text-5xl">RSS агрегатор</h1>
-        <p>Начните читать RSS сегодня! Это легко, это красиво.</p>
-        <form id="rss-form" class="flex gap-x-4">
-          <label for="rss-input" class="sr-only"></label>
+        <h1 class="text-5xl" id="title">RSS агрегатор</h1>
+        <p id="description">Начните читать RSS сегодня! Это легко, это красиво.</p>
+        <form id="form" class="flex gap-x-4">
+          <label for="input" class="sr-only"></label>
           <input
                   class="w-full text-black rounded-sm"
-                  id="rss-input"
-                  name="rss-input"
+                  id="input"
+                  name="input"
                   placeholder="Ссылка RSS"
                   type="text"
                   autofocus
           >
           <button
                   class="btn btn-primary"
+                  id="submit"
                   name="submit"
                   type="submit"
           >
@@ -29,7 +30,7 @@
           </button>
         </form>
         <div id="error"></div>
-        <p class="text-gray-500 text-sm">
+        <p class="text-gray-500 text-sm" id="hint">
           Пример: https://lorem-rss.hexlet.app/feed
         </p>
       </div>

@@ -1,53 +1,25 @@
 import './style.css'
-import * as yup from 'yup'
-import { proxy, subscribe, snapshot } from 'valtio/vanilla'
+import app from './app'
 
 const elements = {
-  form: document.getElementById('rss-form'),
-  input: document.getElementById('rss-input'),
+  title: document.getElementById('title'),
+  description: document.getElementById('description'),
+  form: document.getElementById('form'),
+  input: document.getElementById('input'),
+  submit: document.getElementById('submit'),
   error: document.getElementById('error'),
+  hint: document.getElementById('hint'),
 }
 
-const state = proxy({
-  form: {
-    input: '',
+const initialState = {
+  ui: {
+    language: 'ru',
     error: '',
+    list: [],
   },
-  list: [],
-})
-
-const validate = (url, list) => {
-  const schema = yup
-    .string()
-    .trim()
-    .required('Не должно быть пустым')
-    .url('Ссылка должна быть валидным URL')
-    .notOneOf(list, 'Такой адрес уже существует')
-
-  schema
-    .validate(url)
-    .then(() => state.form.error = '')
-    .catch(error => state.form.error = error.message)
+  data: {
+    value: '',
+  },
 }
 
-elements.form.addEventListener('submit', (e) => {
-  e.preventDefault()
-
-  validate(state.form.input, state.list)
-
-  if (state.form.error === '') {
-    state.list.push(state.form.input)
-    state.form.input = ''
-    state.form.error = ''
-  }
-})
-
-elements.input.addEventListener('input', (e) => {
-  state.form.input = e.target.value
-})
-
-subscribe(state.form, () => {
-  const { error } = snapshot(state.form)
-  elements.error.textContent = error
-  elements.input.classList.toggle('border-red-600', error !== '')
-})
+app(elements, initialState)
