@@ -1,15 +1,97 @@
-export default (elements, state, i18nInstance) => {
-  const { ui: { error }, data: { value } } = state
+import i18next from 'i18next'
+import resources from './locales/index.js'
 
-  elements.title.textContent = i18nInstance.t($ => $.ui.title)
-  elements.description.textContent = i18nInstance.t($ => $.ui.description)
+const i18n = i18next.createInstance()
 
-  elements.input.classList.toggle('error', error)
-  elements.input.placeholder = i18nInstance.t($ => $.ui.placeholder)
-  elements.input.value = value
-
-  elements.error.textContent = error ? i18nInstance.t($ => $.errors[error]) : ''
-
-  elements.hint.textContent = i18nInstance.t($ => $.ui.hint)
-  elements.submit.textContent = i18nInstance.t($ => $.ui.submit)
+const elements = {
+  header: document.createElement('header'),
+  headerDiv: document.createElement('div'),
+  headerTitle: document.createElement('h1'),
+  headerDescription: document.createElement('p'),
+  headerForm: document.createElement('form'),
+  formInput: document.createElement('input'),
+  formSubmit: document.createElement('button'),
+  formHint: document.createElement('p'),
+  formMessage: document.createElement('p'),
 }
+
+const render = async (container, state) => {
+  const { context: { language }, feed } = state
+  await i18n.init({
+    lng: language,
+    resources,
+  })
+
+  const {
+    header,
+    headerDiv,
+    headerTitle,
+    headerDescription,
+    headerForm,
+    formInput,
+    formSubmit,
+    formHint,
+    formMessage,
+  } = elements
+
+  container.classList.add('container', 'mx-auto', 'flex', 'flex-col')
+  header.classList.add('px-48', 'py-8', 'text-white', 'bg-black')
+  headerDiv.classList.add('space-y-2')
+  headerTitle.classList.add('text-5xl')
+
+  headerForm.classList.add('flex', 'gap-x-4')
+  headerForm.id = 'form'
+
+  formInput.classList.add('w-full', 'text-black', 'rounded-sm')
+  formInput.autofocus = true
+  formInput.id = 'input'
+  formInput.type = 'text'
+
+  formSubmit.classList.add('btn', 'btn-primary')
+  formSubmit.id = 'submit'
+  formSubmit.type = 'submit'
+
+  formHint.classList.add('text-gray-500', 'text-sm')
+
+  headerForm.append(formInput, formSubmit)
+  headerDiv.append(headerTitle, headerDescription, headerForm, formHint, formMessage)
+  header.append(headerDiv)
+  container.append(header)
+
+  updateUI()
+  updateInput(feed)
+}
+
+const updateUI = () => {
+  elements.headerTitle.textContent = i18n.t($ => $.ui.title)
+  elements.headerDescription.textContent = i18n.t($ => $.ui.description)
+  elements.formInput.placeholder = i18n.t($ => $.ui.placeholder)
+  elements.formSubmit.textContent = i18n.t($ => $.ui.submit)
+  elements.formHint.textContent = i18n.t($ => $.ui.hint)
+}
+
+const updateStatusView = ({ status, message }) => {
+  switch (status.state) {
+    case 'success':
+      elements.formMessage.classList.add('text-green-600')
+      elements.formMessage.textContent = i18n.t($ => $.message[message])
+      break
+    case 'failed':
+      elements.formInput.classList.add('error')
+      elements.formMessage.classList.add('text-red-600')
+      elements.formMessage.textContent = i18n.t($ => $.message[message])
+      break
+    default:
+      elements.formInput.classList.remove('error')
+      elements.formMessage.classList.remove('text-green-600', 'text-red-600')
+      elements.formMessage.textContent = ''
+  }
+}
+
+const updateInput = ({ value }) => {
+  elements.formInput.value = value
+}
+
+const updateDataView = () => {}
+
+export { render, updateUI, updateStatusView, updateInput }

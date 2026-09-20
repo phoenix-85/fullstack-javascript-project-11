@@ -6,9 +6,10 @@ export default {
     submit: 'Добавить',
     hint: 'Пример: https://lorem-rss.hexlet.app/feed',
   },
-  errors: {
+  message: {
+    success: 'RSS успешно загружен',
     empty_field: 'Не должно быть пустым',
     invalid_url: 'Ссылка должна быть валидным URL',
-    already_exists: 'Такой адрес уже существует',
+    already_exists: 'Такой адрес уже существует'
   },
 }

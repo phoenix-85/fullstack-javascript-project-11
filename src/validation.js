@@ -1,11 +1,11 @@
 import * as yup from 'yup'
 
-export default async (state) => yup
+export default async (feed, feeds) => yup
     .string()
     .trim()
     .required('empty_field')
     .url('invalid_url')
-    .notOneOf(state.ui.list, 'already_exists')
-    .validate(state.data.value)
-    .then(() => '')
-    .catch(err => err.message)
+    .notOneOf(feeds, 'already_exists')
+    .validate(feed)
+    .then(() => ({ message: 'success', status: 'success' }))
+    .catch(err => ({ message: err.message, status: 'failed' }))
