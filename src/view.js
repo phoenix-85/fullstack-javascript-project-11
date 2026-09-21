@@ -88,8 +88,8 @@ const updateStatusView = ({ status, message }) => {
   }
 }
 
-const updateInput = ({ value }) => {
-  elements.formInput.value = value
+const updateInput = ({ url }) => {
+  elements.formInput.value = url
 }
 
 const updateDataView = () => {}

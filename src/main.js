@@ -8,7 +8,7 @@ const initialState = {
     language: 'ru',
   },
   feed: {
-    value: '',
+    url: '',
   },
   status: {
     state: 'editing',

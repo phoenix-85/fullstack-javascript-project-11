@@ -1,29 +1,30 @@
+import axios from 'axios'
 import validate from './validation.js'
-import {render, updateInput, updateStatusView, updateUI} from './view.js'
+import { render, updateInput, updateStatusView, updateUI } from './view.js'
 import { proxy, subscribe, snapshot } from 'valtio/vanilla'
 
 export default async (container, initialState = {}) => {
   const state = proxy({ ...initialState })
 
   const handleInput = ({ target: { value } }) => {
-    state.feed.value = value
+    state.feed.url = value
     state.status.state = 'editing'
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    const { feed: { value }, data: { feeds } } = snapshot(state)
-    validate(value, feeds)
-      .then(({ message, status }) => {
-        state.message = message
-        state.status.state = status
-      })
+    const { feed: { url }, data: { feeds } } = snapshot(state)
+    validate(url, feeds)
+      .then(() => axios(url))
+      .then(res => { console.log(res.data) })
       .then(() => {
-        if (state.status.state === 'failed') return
-
-        //state.data.feeds.push(value)
-        state.feed.value = ''
+        state.feed.url = ''
+        state.status.state = 'success'
+      })
+      .catch(error => {
+        state.message = error.code || error.message
+        state.status.state = 'failed'
       })
   }
 

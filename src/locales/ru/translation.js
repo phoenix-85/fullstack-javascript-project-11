@@ -7,9 +7,10 @@ export default {
     hint: 'Пример: https://lorem-rss.hexlet.app/feed',
   },
   message: {
-    success: 'RSS успешно загружен',
-    empty_field: 'Не должно быть пустым',
-    invalid_url: 'Ссылка должна быть валидным URL',
-    already_exists: 'Такой адрес уже существует'
+    SUCCESS: 'RSS успешно загружен',
+    EMPTY_FIELD: 'Не должно быть пустым',
+    INVALID_URL: 'Ссылка должна быть валидным URL',
+    ALREADY_EXISTS: 'Такой адрес уже существует',
+    ERR_NETWORK: 'Ошибка сети',
   },
 }
