@@ -16,7 +16,7 @@ const initialState = {
   message: '',
   data: {
     feeds: [],
-    posts: {},
+    posts: [],
   },
 }
 

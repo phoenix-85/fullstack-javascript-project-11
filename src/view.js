@@ -13,6 +13,13 @@ const elements = {
   formSubmit: document.createElement('button'),
   formHint: document.createElement('p'),
   formMessage: document.createElement('p'),
+  main: document.createElement('main'),
+  mainPosts: document.createElement('section'),
+  mainPostsTitle: document.createElement('h2'),
+  mainPostsDiv: document.createElement('div'),
+  mainFeeds: document.createElement('section'),
+  mainFeedsTitle: document.createElement('h2'),
+  mainFeedsDiv: document.createElement('div'),
 }
 
 const render = async (container, state) => {
@@ -32,10 +39,17 @@ const render = async (container, state) => {
     formSubmit,
     formHint,
     formMessage,
+    main,
+    mainPosts,
+    mainPostsTitle,
+    mainPostsDiv,
+    mainFeeds,
+    mainFeedsTitle,
+    mainFeedsDiv,
   } = elements
 
   container.classList.add('container', 'mx-auto', 'flex', 'flex-col')
-  header.classList.add('px-48', 'py-8', 'text-white', 'bg-black')
+  header.classList.add('px-48', 'py-8', 'text-white', 'bg-slate-800')
   headerDiv.classList.add('space-y-2')
   headerTitle.classList.add('text-5xl')
 
@@ -51,12 +65,26 @@ const render = async (container, state) => {
   formSubmit.id = 'submit'
   formSubmit.type = 'submit'
 
-  formHint.classList.add('text-gray-500', 'text-sm')
+  formHint.classList.add('text-gray-400', 'text-sm')
+  formMessage.classList.add('text-sm')
+
+  main.classList.add('flex', 'gap-x-8', 'px-24', 'py-8')
+
+  mainPosts.classList.add('flex', 'flex-col', 'flex-3', 'p-4', 'border', 'border-gray-200')
+  mainPostsTitle.classList.add('text-2xl', 'semibold')
+
+  mainFeeds.classList.add('flex', 'flex-col', 'flex-1', 'p-4', 'border', 'border-gray-200')
+  mainFeedsTitle.classList.add('text-2xl', 'semibold')
 
   headerForm.append(formInput, formSubmit)
   headerDiv.append(headerTitle, headerDescription, headerForm, formHint, formMessage)
   header.append(headerDiv)
-  container.append(header)
+
+  mainPosts.append(mainPostsTitle, mainPostsDiv)
+  mainFeeds.append(mainFeedsTitle, mainFeedsDiv)
+  main.append(mainPosts, mainFeeds)
+
+  container.append(header, main)
 
   updateUI()
   updateInput(feed)
@@ -68,6 +96,8 @@ const updateUI = () => {
   elements.formInput.placeholder = i18n.t($ => $.ui.placeholder)
   elements.formSubmit.textContent = i18n.t($ => $.ui.submit)
   elements.formHint.textContent = i18n.t($ => $.ui.hint)
+  elements.mainPostsTitle.textContent = i18n.t($ => $.ui.posts)
+  elements.mainFeedsTitle.textContent = i18n.t($ => $.ui.feeds)
 }
 
 const updateStatusView = ({ status, message }) => {
@@ -92,6 +122,21 @@ const updateInput = ({ url }) => {
   elements.formInput.value = url
 }
 
-const updateDataView = () => {}
+const updateDataView = ({ posts, feeds }) => {
+  const newPosts = posts.map(post => {
+    const el= document.createElement('div')
+    el.textContent = post.title
+    return el
+  })
 
-export { render, updateUI, updateStatusView, updateInput }
+  const newFeeds = feeds.map(feed => {
+    const el= document.createElement('div')
+    el.textContent = feed.title
+    return el
+  })
+
+  elements.mainPostsDiv.replaceChildren(...newPosts)
+  elements.mainFeedsDiv.replaceChildren(...newFeeds)
+}
+
+export { render, updateUI, updateStatusView, updateInput, updateDataView }

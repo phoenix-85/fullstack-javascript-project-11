@@ -5,6 +5,8 @@ export default {
     placeholder: 'Ссылка RSS',
     submit: 'Добавить',
     hint: 'Пример: https://lorem-rss.hexlet.app/feed',
+    posts: 'Посты',
+    feeds: 'Фиды',
   },
   message: {
     SUCCESS: 'RSS успешно загружен',
@@ -12,5 +14,6 @@ export default {
     INVALID_URL: 'Ссылка должна быть валидным URL',
     ALREADY_EXISTS: 'Такой адрес уже существует',
     ERR_NETWORK: 'Ошибка сети',
+    PARSER_ERROR: 'Ресурс не содержит валидный RSS',
   },
 }
