@@ -122,21 +122,24 @@ const updateInput = ({ url }) => {
   elements.formInput.value = url
 }
 
-const updateDataView = ({ posts, feeds }) => {
-  const newPosts = posts.map(post => {
-    const el= document.createElement('div')
-    el.textContent = post.title
-    return el
-  })
-
-  const newFeeds = feeds.map(feed => {
+const updateFeedsView = ({ data }) => {
+  const newFeeds = data.map(feed => {
     const el= document.createElement('div')
     el.textContent = feed.title
     return el
   })
 
-  elements.mainPostsDiv.replaceChildren(...newPosts)
   elements.mainFeedsDiv.replaceChildren(...newFeeds)
 }
 
-export { render, updateUI, updateStatusView, updateInput, updateDataView }
+const updatePostsView = ({ data }) => {
+  const newPosts = data.map(post => {
+    const el= document.createElement('div')
+    el.textContent = post.title
+    return el
+  })
+
+  elements.mainPostsDiv.replaceChildren(...newPosts)
+}
+
+export { render, updateUI, updateStatusView, updateInput, updateFeedsView , updatePostsView}

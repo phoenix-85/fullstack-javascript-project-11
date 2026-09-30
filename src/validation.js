@@ -7,3 +7,4 @@ export default async (url, urlList) => yup
     .url('INVALID_URL')
     .notOneOf(urlList, 'ALREADY_EXISTS')
     .validate(url)
+    .then(() => url)

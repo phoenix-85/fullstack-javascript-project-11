@@ -14,10 +14,13 @@ const initialState = {
     state: 'editing',
   },
   message: '',
-  data: {
-    feeds: [],
-    posts: [],
+  feeds: {
+    data: [],
   },
+  posts: {
+    data: [],
+  },
+  postPubDates: [],
 }
 
 app(container, initialState)
