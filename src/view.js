@@ -16,10 +16,10 @@ const elements = {
   main: document.createElement('main'),
   mainPosts: document.createElement('section'),
   mainPostsTitle: document.createElement('h2'),
-  mainPostsDiv: document.createElement('div'),
+  mainPostList: document.createElement('ul'),
   mainFeeds: document.createElement('section'),
   mainFeedsTitle: document.createElement('h2'),
-  mainFeedsDiv: document.createElement('div'),
+  mainFeedList: document.createElement('ul'),
 }
 
 const render = async (container, state) => {
@@ -42,10 +42,10 @@ const render = async (container, state) => {
     main,
     mainPosts,
     mainPostsTitle,
-    mainPostsDiv,
+    mainPostList,
     mainFeeds,
     mainFeedsTitle,
-    mainFeedsDiv,
+    mainFeedList,
   } = elements
 
   container.classList.add('container', 'mx-auto', 'flex', 'flex-col')
@@ -72,18 +72,18 @@ const render = async (container, state) => {
 
   mainPosts.classList.add('flex', 'flex-col', 'flex-3', 'p-4', 'border', 'border-gray-200')
   mainPostsTitle.classList.add('text-2xl', 'bold', 'mb-4')
-  mainPostsDiv.classList.add('flex', 'flex-col', 'gap-y-2')
+  mainPostList.classList.add('flex', 'flex-col', 'gap-y-2')
 
   mainFeeds.classList.add('flex', 'flex-col', 'flex-1', 'p-4', 'border', 'border-gray-200')
   mainFeedsTitle.classList.add('text-2xl', 'bold', 'mb-4')
-  mainFeedsDiv.classList.add('flex', 'flex-col', 'gap-y-2')
+  mainFeedList.classList.add('flex', 'flex-col', 'gap-y-2')
 
   headerForm.append(formInput, formSubmit)
   headerDiv.append(headerTitle, headerDescription, headerForm, formHint, formMessage)
   header.append(headerDiv)
 
-  mainPosts.append(mainPostsTitle, mainPostsDiv)
-  mainFeeds.append(mainFeedsTitle, mainFeedsDiv)
+  mainPosts.append(mainPostsTitle, mainPostList)
+  mainFeeds.append(mainFeedsTitle, mainFeedList)
   main.append(mainPosts, mainFeeds)
 
   container.append(header, main)
@@ -126,7 +126,7 @@ const updateInput = ({ url }) => {
 
 const updateFeedsView = ({ data }) => {
   const newFeeds = data.map(feed => {
-    const el= document.createElement('div')
+    const el= document.createElement('li')
 
     const feedTitle = document.createElement('h3')
     feedTitle.textContent = feed.title
@@ -138,12 +138,12 @@ const updateFeedsView = ({ data }) => {
     return el
   })
 
-  elements.mainFeedsDiv.replaceChildren(...newFeeds)
+  elements.mainFeedList.replaceChildren(...newFeeds)
 }
 
 const updatePostsView = ({ data }, handleSeen) => {
   const newPosts = data.map((post, postId) => {
-    const el= document.createElement('div')
+    const el= document.createElement('li')
     el.classList.add('flex', 'justify-between', 'items-center', 'px-4', 'py-2', 'border', 'border-gray-200')
 
     const link = document.createElement('a')
@@ -165,7 +165,7 @@ const updatePostsView = ({ data }, handleSeen) => {
     return el
   }).reverse()
 
-  elements.mainPostsDiv.replaceChildren(...newPosts)
+  elements.mainPostList.replaceChildren(...newPosts)
 }
 
 const modal = (post) => {
