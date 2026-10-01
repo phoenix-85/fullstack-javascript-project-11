@@ -127,9 +127,14 @@ const updateInput = ({ url }) => {
 const updateFeedsView = ({ data }) => {
   const newFeeds = data.map(feed => {
     const el= document.createElement('div')
+
     const feedTitle = document.createElement('h3')
     feedTitle.textContent = feed.title
-    el.appendChild(feedTitle)
+
+    const feedDescription = document.createElement('p')
+    feedDescription.textContent = feed.description
+
+    el.append(feedTitle, feedDescription)
     return el
   })
 
@@ -141,8 +146,11 @@ const updatePostsView = ({ data }, handleSeen) => {
     const el= document.createElement('div')
     el.dataset.seen = post.seen
     el.classList.add('flex', 'justify-between', 'items-center', 'px-4', 'py-2', 'border', 'border-gray-200')
-    el.classList.toggle('font-bold', !post.seen)
-    el.textContent = post.title
+
+    const link = document.createElement('a')
+    link.href = post.link
+    link.classList.toggle('font-bold', !post.seen)
+    link.textContent = post.title
 
     const buttonView = document.createElement('button')
     buttonView.classList.add('btn', 'btn-secondary')
@@ -153,7 +161,7 @@ const updatePostsView = ({ data }, handleSeen) => {
       modal(post).showModal()
     })
 
-    el.appendChild(buttonView)
+    el.append(link, buttonView)
     return el
   }).reverse()
 
