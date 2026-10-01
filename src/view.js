@@ -127,7 +127,9 @@ const updateInput = ({ url }) => {
 const updateFeedsView = ({ data }) => {
   const newFeeds = data.map(feed => {
     const el= document.createElement('div')
-    el.textContent = feed.title
+    const feedTitle = document.createElement('h3')
+    feedTitle.textContent = feed.title
+    el.appendChild(feedTitle)
     return el
   })
 

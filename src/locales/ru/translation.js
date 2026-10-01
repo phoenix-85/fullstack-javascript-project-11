@@ -15,7 +15,7 @@ export default {
     SUCCESS: 'RSS успешно загружен',
     EMPTY_FIELD: 'Не должно быть пустым',
     INVALID_URL: 'Ссылка должна быть валидным URL',
-    ALREADY_EXISTS: 'Такой адрес уже существует',
+    ALREADY_EXISTS: 'RSS уже существует',
     ERR_NETWORK: 'Ошибка сети',
     PARSER_ERROR: 'Ресурс не содержит валидный RSS',
   },
