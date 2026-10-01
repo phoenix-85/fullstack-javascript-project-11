@@ -4,7 +4,7 @@ export default (content) => {
 
   if (xml.querySelector('parsererror')) throw new Error('PARSER_ERROR')
 
-  const channel = xml.documentElement.firstChild
+  const channel = xml.documentElement.firstElementChild
 
   const feed = {
     title: channel.querySelector('title').textContent,
