@@ -144,10 +144,10 @@ const updateFeedsView = ({ data }) => {
 const updatePostsView = ({ data }, handleSeen) => {
   const newPosts = data.map((post, postId) => {
     const el= document.createElement('div')
-    el.dataset.seen = post.seen
     el.classList.add('flex', 'justify-between', 'items-center', 'px-4', 'py-2', 'border', 'border-gray-200')
 
     const link = document.createElement('a')
+    link.dataset.seen = post.seen
     link.href = post.link
     link.classList.toggle('font-bold', !post.seen)
     link.textContent = post.title
