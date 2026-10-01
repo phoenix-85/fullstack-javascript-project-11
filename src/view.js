@@ -71,10 +71,12 @@ const render = async (container, state) => {
   main.classList.add('flex', 'gap-x-8', 'px-24', 'py-8')
 
   mainPosts.classList.add('flex', 'flex-col', 'flex-3', 'p-4', 'border', 'border-gray-200')
-  mainPostsTitle.classList.add('text-2xl', 'semibold')
+  mainPostsTitle.classList.add('text-2xl', 'bold', 'mb-4')
+  mainPostsDiv.classList.add('flex', 'flex-col', 'gap-y-2')
 
   mainFeeds.classList.add('flex', 'flex-col', 'flex-1', 'p-4', 'border', 'border-gray-200')
-  mainFeedsTitle.classList.add('text-2xl', 'semibold')
+  mainFeedsTitle.classList.add('text-2xl', 'bold', 'mb-4')
+  mainFeedsDiv.classList.add('flex', 'flex-col', 'gap-y-2')
 
   headerForm.append(formInput, formSubmit)
   headerDiv.append(headerTitle, headerDescription, headerForm, formHint, formMessage)
@@ -132,14 +134,77 @@ const updateFeedsView = ({ data }) => {
   elements.mainFeedsDiv.replaceChildren(...newFeeds)
 }
 
-const updatePostsView = ({ data }) => {
-  const newPosts = data.map(post => {
+const updatePostsView = ({ data }, handleSeen) => {
+  const newPosts = data.map((post, postId) => {
     const el= document.createElement('div')
+    el.dataset.seen = post.seen
+    el.classList.add('flex', 'justify-between', 'items-center', 'px-4', 'py-2', 'border', 'border-gray-200')
+    el.classList.toggle('font-bold', !post.seen)
     el.textContent = post.title
+
+    const buttonView = document.createElement('button')
+    buttonView.classList.add('btn', 'btn-secondary')
+    buttonView.textContent = i18n.t($ => $.ui.view)
+    buttonView.addEventListener('click', () => {
+      handleSeen(postId)
+
+      modal(post).showModal()
+    })
+
+    el.appendChild(buttonView)
     return el
-  })
+  }).reverse()
 
   elements.mainPostsDiv.replaceChildren(...newPosts)
+}
+
+const modal = (post) => {
+  const closeModal = () => {
+    modalPostView.close()
+    modalPostView.remove()
+  }
+
+  const modalPostView = document.createElement('dialog')
+  modalPostView.classList.add('m-auto', 'p-6', 'rounded-md')
+
+  const formModalPostView = document.createElement('form')
+  formModalPostView.classList.add('flex', 'flex-col', 'gap-y-4')
+  formModalPostView.method = 'dialog'
+
+  const headerModalPostView = document.createElement('div')
+  headerModalPostView.classList.add('flex', 'justify-between', 'font-bold')
+  headerModalPostView.textContent = post.title
+
+  const bodyModalPostView = document.createElement('div')
+  bodyModalPostView.textContent = post.description
+  bodyModalPostView.dataset.test = 'modal-body'
+
+  const buttonsModalPostView = document.createElement('div')
+  buttonsModalPostView.classList.add('flex', 'justify-end', 'gap-x-4')
+
+  const openButton  = document.createElement('a')
+  openButton.classList.add('btn', 'btn-primary')
+  openButton.textContent = i18n.t($ => $.ui.open)
+  openButton.href = post.link
+
+  const closeButton  = document.createElement('button')
+  closeButton.classList.add('btn', 'btn-secondary')
+  closeButton.textContent = i18n.t($ => $.ui.close)
+  closeButton.addEventListener('click', () => closeModal)
+
+  const crossButton = document.createElement('button')
+  crossButton.classList.add('h-5', 'w-5')
+  crossButton.textContent = 'X'
+  crossButton.addEventListener('click', () => closeModal)
+
+  headerModalPostView.appendChild(crossButton)
+  buttonsModalPostView.append(openButton, closeButton)
+  formModalPostView.append(headerModalPostView, bodyModalPostView, buttonsModalPostView)
+  modalPostView.append(formModalPostView)
+
+  document.body.appendChild(modalPostView)
+
+  return modalPostView
 }
 
 export { render, updateUI, updateStatusView, updateInput, updateFeedsView , updatePostsView}

@@ -7,6 +7,9 @@ export default {
     hint: 'Пример: https://lorem-rss.hexlet.app/feed',
     posts: 'Посты',
     feeds: 'Фиды',
+    view: 'Просмотр',
+    open: 'Читать полностью',
+    close: 'Закрыть',
   },
   message: {
     SUCCESS: 'RSS успешно загружен',

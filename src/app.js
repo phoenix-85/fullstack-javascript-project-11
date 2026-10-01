@@ -20,11 +20,16 @@ export default async (container, initialState = {}) => {
 
     const newPosts = posts
       .filter(post => new Date(post.pubDate) > lastPubDate)
-      .map(post => ({ feedId, ...post }))
+      .sort((a, b) => new Date(a.pubDate) - new Date(b.pubDate))
+      .map(post => ({
+        feedId,
+        seen: false,
+        ...post,
+      }))
 
     if (newPosts.length > 0) {
-      state.posts.data.unshift(...newPosts)
-      state.postPubDates[feedId] = new Date(newPosts[0].pubDate)
+      state.posts.data.push(...newPosts)
+      state.postPubDates[feedId] = new Date(newPosts[newPosts.length - 1].pubDate)
     }
   }
 
@@ -75,6 +80,8 @@ export default async (container, initialState = {}) => {
       })
   }
 
+  const handleSeen = (postId) => state.posts.data[postId].seen = true
+
   subscribe(state.context, () => updateUI())
   subscribe(state.feed, () => updateInput(snapshot(state.feed)))
   subscribe(state.status, () => updateStatusView(snapshot(state)))
@@ -82,7 +89,7 @@ export default async (container, initialState = {}) => {
     fetchNewFeedPosts()
     updateFeedsView(snapshot(state.feeds))
   })
-  subscribe(state.posts, () => updatePostsView(snapshot(state.posts)))
+  subscribe(state.posts, () => updatePostsView(snapshot(state.posts), handleSeen))
 
   render(container, snapshot(state)).then(() => {
     document.getElementById('input').addEventListener('input', handleInput)
